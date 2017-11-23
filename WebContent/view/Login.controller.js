@@ -56,6 +56,8 @@ sap.ui.controller("sap.ui.SplitApp.view.Login", {
 		var data = dataReq(url,dataToPost,sap.ui.SplitApp.Gateway.getUser());
 		if(data){
 			console.log("data",data);
+			this.dataToApp(data);
+			this.getRouter().navTo("app");
 		}else{
 			console.log("no data");
 		}
