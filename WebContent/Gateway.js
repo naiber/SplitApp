@@ -64,6 +64,7 @@ sap.ui.SplitApp.Gateway = {
 			  },
 			  error: function(jqXHR,textStatus,err) {
 			    console.log('error:' + err);
+			    that.setUser(err)
 			  }
 			})
 			
