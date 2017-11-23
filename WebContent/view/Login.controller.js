@@ -54,7 +54,7 @@ sap.ui.controller("sap.ui.SplitApp.view.Login", {
 		
 		
 		var data = dataReq(url,dataToPost,sap.ui.SplitApp.Gateway.getUser());
-		if(typeof data == 'undefined' || !data){
+		if(typeof data == 'undefined'){
 			console.log("no data");
 		}else{
 			console.log("data",data);
