@@ -1,0 +1,74 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta http-equiv='Content-Type' content='text/html;charset=UTF-8'/>
+
+		<title>Split App</title>
+		
+		<script id="sap-ui-bootstrap"
+			src="https://openui5.hana.ondemand.com/1.48.10/resources/sap-ui-core.js"
+			data-sap-ui-theme="sap_bluecrystal"
+			data-sap-ui-libs="sap.m,sap.ui.layout"
+			data-sap-ui-xx-bindingSyntax="complex"
+			data-sap-ui-resourceroots='{
+				"sap.ui.SplitApp": "./"
+			}' >
+		</script>
+		
+		<style type="text/css">
+		@media (min-width: 980px){
+			.select{
+				margin : 40px 20px 0 130px;
+			}
+			
+			.selectOrder{
+				width : 300px;
+			}
+			
+			.date{
+				margin-top: 40px;
+				margin-left : 50px; 
+				width : 150px;
+			}
+			
+			.saveB{
+				margin-top : 62px;
+				margin-left : 25px;
+			}
+			
+			.table{
+				margin-top : 50px;
+			}
+			
+			.wrapperShell .sapMSplitContainerMaster {
+ 				 width:20%
+			}
+			
+			.footerIcon {
+				position: absolute;
+    			right: 5px;
+			}
+			
+		}
+		
+		@media (max-width: 480px){
+			
+		}
+		
+		
+		</style>
+
+		<script>
+		new sap.m.Shell({
+			app : new sap.ui.core.ComponentContainer({
+				name : 'sap.ui.SplitApp'
+			})
+		}).placeAt('content');
+		</script>
+
+	</head>
+	<body class="sapUiBody" role="application">
+		<div id="content"></div>
+	</body>
+</html>

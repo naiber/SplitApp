@@ -1,0 +1,135 @@
+<core:View xmlns:l="sap.ui.layout" xmlns:u="sap.ui.unified"
+	xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:core="sap.ui.core"
+	controllerName="sap.ui.SplitApp.view.Detail" xmlns:html="http://www.w3.org/1999/xhtml">
+	<Page title="{path : '/user/name'}">
+		<content>
+		<!-- <Calendar xmlns="sap.ui.unified"
+	id="id"
+	busy="false"
+	busyIndicatorDelay="1000"
+	visible="true"
+	fieldGroupIds=""
+	intervalSelection="false"
+	singleSelection="true"
+	months="1"
+	firstDayOfWeek="-1"
+	nonWorkingDays=""
+	primaryCalendarType=""
+	secondaryCalendarType=""
+	width=""
+	minDate=""
+	maxDate=""
+	showWeekNumbers="true"
+	ariaLabelledBy=""
+	legend=""
+	validateFieldGroup=""
+	select=""
+	cancel=""
+	startDateChange="">
+		<tooltip></tooltip> sap.ui.core.TooltipBase
+		<dependents></dependents> sap.ui.core.Element, since 1.19
+		<selectedDates> sap.ui.unified.DateRange
+			<DateRange xmlns="sap.ui.unified"
+				id="id1"
+				startDate=""
+				endDate="">
+					<tooltip></tooltip> sap.ui.core.TooltipBase
+					<dependents></dependents> sap.ui.core.Element, since 1.19
+			</DateRange>
+		</selectedDates>
+		<specialDates> sap.ui.unified.DateTypeRange, since 1.24.0
+			<DateTypeRange xmlns="sap.ui.unified"
+				id="id2"
+				startDate=""
+				endDate=""
+				type="Type01">
+					<tooltip></tooltip> sap.ui.core.TooltipBase
+					<dependents></dependents> sap.ui.core.Element, since 1.19
+			</DateTypeRange>
+		</specialDates>
+		<disabledDates></disabledDates> sap.ui.unified.DateRange, since 1.38.0
+</Calendar> -->
+
+			<u:CalendarDateInterval 
+				id="calendar" 
+				days="9"
+				width="100%" 
+				select="handleCalendarSelect"
+				pickerPopup="true" />
+			<l:VerticalLayout
+				id = "selectField">
+				<Label text="Tipo commessa:" labelFor="selectOrder" required = "true"/>
+				<Select
+						id="selectOrder"
+						forceSelection="false"
+						change="handleSelectChange"
+						items="{ path : '/items'}">
+					<core:Item key="{id}" text="name : {title}"/>
+				</Select>
+			</l:VerticalLayout>
+			<l:VerticalLayout
+				id="dateStart">
+				<Label text="Inizio: " labelFor="startDate"/>
+				<DateTimePicker
+						id="startDate"
+						displayFormat="short"
+						required="true"
+						change="handleDateInput"/>
+			</l:VerticalLayout>
+			<l:VerticalLayout
+				id="dateEnd">
+				<Label text="Fine: " labelFor="endDate"/>
+				<DateTimePicker
+						id="endDate"
+						displayFormat="short"
+						required="true"
+						change="handleDateInput"/>
+			</l:VerticalLayout>
+			<l:VerticalLayout>
+				<Button
+						id="saveButton"
+						text = "Salva"
+						press = "handleSaveButton">
+				</Button>
+			</l:VerticalLayout>
+			<Table
+				id="orderTable"
+				fixedLayout= "true"
+				items="{ path : '/user/appointment'}">
+				<headerToolbar>
+				</headerToolbar>
+				<columns>
+					<Column>
+						<Text text= "Commessa"/>
+					</Column>
+					<Column>
+						<Text text= "Fornitore"/>
+					</Column>
+					<Column>
+						<Text text= "Ore"/>
+					</Column>
+					<Column>
+						<Text text= "Azioni"/>
+					</Column>
+				</columns>
+				<items>
+					<ColumnListItem>
+						<cells>
+							<ObjectIdentifier
+								title= "{order}"
+								text = "{idOrder}"
+							/>
+							<Text text ="{supplier}"/>
+							<Text text="{hours}"/>
+							<Text text="{actions}"/>
+						</cells>
+					</ColumnListItem>
+				</items>
+			</Table>
+		</content>
+		<footer>
+			<Toolbar>
+			</Toolbar>
+		</footer>
+	</Page>
+</core:View>

@@ -1,0 +1,28 @@
+<mvc:View 
+	xmlns:l="sap.ui.layout"
+	xmlns:core="sap.ui.core"
+	xmlns:html="http://www.w3.org/1999/xhtml"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns="sap.m"
+	controllerName="sap.ui.SplitApp.view.Login" >
+			<Panel
+				height = "100%">
+				<headerToolbar>
+					<Toolbar>
+						<Title level="H2" text="Login Page" textAlign="Center"/>
+					</Toolbar>
+				</headerToolbar>
+				<FlexBox
+					direction= "Column"
+					height="100%"
+					alignItems="Center"
+					justifyContent="Center"
+					fitContainer="true">
+					<items>
+						<Input xmlns="sap.m" id="userF" type="Text" placeholder="username" width="300px"/>
+						<Input xmlns="sap.m" id="passF" type="Password" placeholder="password" width="300px"/>
+						<Button xmlns="sap.m" id="submit" text="accedi" press="submitPressed"/>
+					</items>
+				</FlexBox>
+			</Panel>	
+</mvc:View>

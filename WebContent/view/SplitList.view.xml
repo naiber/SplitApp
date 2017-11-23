@@ -1,0 +1,45 @@
+<core:View
+	controllerName="sap.ui.SplitApp.view.SplitList"
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core" >
+	<Page
+		title="Master"
+		id="master">
+		<List
+			id="list"
+			mode=""
+			select="handleListSelect"
+			items="{path : '/items'}" 
+			headerText = "">
+			<items>
+				<ObjectListItem
+					type = "Active"
+					press = "handleListItemPress"
+					title = "{name}">
+					<attributes>
+						<ObjectAttribute text=""/>
+					</attributes>
+					<firstStatus>
+						<ObjectStatus 
+						text=""/>
+					</firstStatus>
+				</ObjectListItem>
+			</items>
+		</List>
+		<footer>
+			<Toolbar>
+				<core:Icon
+					id="userIcon"
+					src = ""
+				></core:Icon>
+				<Text 
+					id="userName"
+					text=""/>
+				<core:Icon
+					id="masterIcon"
+					src="sap-icon://sap-ui5">
+				</core:Icon>
+			</Toolbar>
+		</footer>
+	</Page>
+</core:View>
