@@ -1,70 +1,37 @@
 <core:View xmlns:l="sap.ui.layout" xmlns:u="sap.ui.unified"
 	xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:core="sap.ui.core"
 	controllerName="sap.ui.SplitApp.view.Detail" xmlns:html="http://www.w3.org/1999/xhtml">
-	<Page title="{path : '/user/name'}">
+	<Page 
+		title="{ path : '/menu'}"
+		showNavButton="{device>/isPhone}"
+		navButtonPress="handleNavButton">
 		<content>
-		<!-- <Calendar xmlns="sap.ui.unified"
-	id="id"
-	busy="false"
-	busyIndicatorDelay="1000"
-	visible="true"
-	fieldGroupIds=""
-	intervalSelection="false"
-	singleSelection="true"
-	months="1"
-	firstDayOfWeek="-1"
-	nonWorkingDays=""
-	primaryCalendarType=""
-	secondaryCalendarType=""
-	width=""
-	minDate=""
-	maxDate=""
-	showWeekNumbers="true"
-	ariaLabelledBy=""
-	legend=""
-	validateFieldGroup=""
-	select=""
-	cancel=""
-	startDateChange="">
-		<tooltip></tooltip> sap.ui.core.TooltipBase
-		<dependents></dependents> sap.ui.core.Element, since 1.19
-		<selectedDates> sap.ui.unified.DateRange
-			<DateRange xmlns="sap.ui.unified"
-				id="id1"
-				startDate=""
-				endDate="">
-					<tooltip></tooltip> sap.ui.core.TooltipBase
-					<dependents></dependents> sap.ui.core.Element, since 1.19
-			</DateRange>
-		</selectedDates>
-		<specialDates> sap.ui.unified.DateTypeRange, since 1.24.0
-			<DateTypeRange xmlns="sap.ui.unified"
-				id="id2"
-				startDate=""
-				endDate=""
-				type="Type01">
-					<tooltip></tooltip> sap.ui.core.TooltipBase
-					<dependents></dependents> sap.ui.core.Element, since 1.19
-			</DateTypeRange>
-		</specialDates>
-		<disabledDates></disabledDates> sap.ui.unified.DateRange, since 1.38.0
-</Calendar> -->
-
 			<u:CalendarDateInterval 
 				id="calendar" 
 				days="9"
 				width="100%" 
 				select="handleCalendarSelect"
 				pickerPopup="true" />
-			<l:VerticalLayout
-				id = "selectField">
-				<Label text="Tipo commessa:" labelFor="selectOrder" required = "true"/>
+				<l:VerticalLayout
+					id = "selectField">
+				<Label text="Tipo commessa:" labelFor="commessa" required = "true"/>
 				<Select
-						id="selectOrder"
-						forceSelection="false"
-						change="handleSelectChange"
-						items="{ path : '/items'}">
-					<core:Item key="{id}" text="name : {title}"/>
+					id="commessa"
+					forceSelection="false"
+					change="selectCommessaCreate"
+					items="{commesse>/}">
+					<core:Item key="{commesse>Id}" text="{commesse>Name}"/>
+				</Select>
+			</l:VerticalLayout>
+			<l:VerticalLayout
+				id="editSupplier">
+			<Label text="Fornitore" labelFor="fornitore" required = "true"/>
+				<Select
+					id="fornitore"
+					forceSelection = "false"
+					change = "selectFornitoreCreate"
+					items = "{fornitori>/}">
+					<core:Item key="{fornitori>Id}" text="{fornitori>Name}"/>
 				</Select>
 			</l:VerticalLayout>
 			<l:VerticalLayout
@@ -88,6 +55,7 @@
 			<l:VerticalLayout>
 				<Button
 						id="saveButton"
+						enabled = "false"
 						text = "Salva"
 						press = "handleSaveButton">
 				</Button>
@@ -95,7 +63,7 @@
 			<Table
 				id="orderTable"
 				fixedLayout= "true"
-				items="{ path : '/user/appointment'}">
+				items="{path : '/orders'}">
 				<headerToolbar>
 				</headerToolbar>
 				<columns>
@@ -108,9 +76,14 @@
 					<Column>
 						<Text text= "Ore"/>
 					</Column>
-					<Column>
+					<Column
+						id="actions1"
+						styleClass="icon1">
 						<Text text= "Azioni"/>
 					</Column>
+					<Column
+						id="actions2"
+						styleClass="icon2"></Column>
 				</columns>
 				<items>
 					<ColumnListItem>
@@ -118,10 +91,20 @@
 							<ObjectIdentifier
 								title= "{order}"
 								text = "{idOrder}"
+								press="deleteItem"
 							/>
 							<Text text ="{supplier}"/>
 							<Text text="{hours}"/>
-							<Text text="{actions}"/>
+							<Button
+								id="editIcon"
+								icon="{actions1}"
+								press="editItem">
+							</Button>
+							<Button
+								id="deleteIcon"
+								icon="{actions2}"
+								press="deleteItem">
+							</Button>
 						</cells>
 					</ColumnListItem>
 				</items>

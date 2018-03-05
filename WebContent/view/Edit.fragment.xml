@@ -1,0 +1,59 @@
+<core:FragmentDefinition
+		xmlns="sap.m"
+		xmlns:f="sap.ui.layout.form"
+		xmlns:core="sap.ui.core">
+	<ResponsivePopover
+			title=""
+			class="sapUiPopupWithPadding"
+			placement="HorizontalPreferredRight">
+		<beginButton>
+			<Button id="OKButton" enabled="false" text="OK" press="handleOkButton"/>
+		</beginButton>
+		<endButton>
+			<Button id="CloseB" text="Annulla" press="handleCancelButton"/>
+		</endButton>
+		<content>
+			<f:SimpleForm id="appointmentForm"
+						  editable="true"
+						  layout="ResponsiveGridLayout"
+						  labelSpanXL="3"
+						  labelSpanL="3"
+						  labelSpanM="3"
+						  labelSpanS="12"
+						  adjustLabelSpan="false"
+						  emptySpanXL="4"
+						  emptySpanL="4"
+						  emptySpanM="4"
+						  emptySpanS="0"
+						  columnsXL="1"
+						  columnsL="1"
+						  columnsM="1"
+						  singleContainerFullSize="false">
+				<f:content>
+					<Label text="Tipo commessa" labelFor="selectCommit"/>
+					<Select
+						id="selectCommessa"
+						forceSelection="false"
+						change="selectCommessaEdit"
+						width="100%"
+						items="{commesse>/}">
+						<core:Item key="{commesse>Id}" text="{commesse>Name}"/>
+					</Select>
+					<Label text="Data inizio"/>
+					<DateTimePicker id="startDate" change="selectDateEdit"/>
+					<Label text="Data fine"/>
+					<DateTimePicker id="endDate" change="selectDateEdit"/>
+					<Label text="Fornitore" labelFor="selectSupplier"/>
+					<Select
+						id="selectFornitore"
+						forceSelection="false"
+						change="selectFornitoreEdit"
+						width="100%"
+						items="{fornitori>/}">
+						<core:Item key="{fornitori>Id}" text="{fornitori>Name}"/>
+					</Select>
+				</f:content>
+			</f:SimpleForm>
+		</content>
+	</ResponsivePopover>
+</core:FragmentDefinition>

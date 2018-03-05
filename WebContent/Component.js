@@ -120,15 +120,15 @@ sap.ui.core.UIComponent.extend("sap.ui.SplitApp.Component", {
 		
 		
 
-//		var deviceModel = new sap.ui.model.json.JSONModel({
-//			isPhone : jQuery.device.is.phone,
-//			isNoPhone : !jQuery.device.is.phone,
-//			listMode : (jQuery.device.is.phone) ? sap.m.ListMode.None : sap.m.ListMode.SingleSelectMaster,
-//			listItemType : (jQuery.device.is.phone) ? "Active" : "Inactive"
-//		});
-//		
-//		deviceModel.setDefaultBindingMode("OneWay");
-//		oView.setModel(deviceModel,"device");
+		var deviceModel = new sap.ui.model.json.JSONModel({
+			isPhone : jQuery.device.is.phone,
+			isNoPhone : !jQuery.device.is.phone,
+			listMode : (jQuery.device.is.phone) ? sap.m.ListMode.None : sap.m.ListMode.SingleSelectMaster,
+			listItemType : (jQuery.device.is.phone) ? "Active" : "Inactive"
+		});
+		
+		deviceModel.setDefaultBindingMode("OneWay");
+		oView.setModel(deviceModel,"device");
 
 		return oView;
 	}

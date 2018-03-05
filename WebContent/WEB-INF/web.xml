@@ -10,7 +10,7 @@
 	<!-- ============================================================== -->
 	<!-- UI5 resource servlet used to handle application resources      -->
 	<!-- ============================================================== -->
-
+	
 	<servlet>
 		<display-name>ResourceServlet</display-name>
 		<servlet-name>ResourceServlet</servlet-name>

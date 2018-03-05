@@ -8,6 +8,8 @@ sap.ui.controller("sap.ui.SplitApp.view.Login", {
 	
 	onInit : function(){
 		console.log("dentro onInit di Login")
+		var userLogged = new sap.ui.model.json.JSONModel();
+		this.getView().setModel(userLogged);
 	},
 	
 //	getStatusToken : function(url){
@@ -44,53 +46,16 @@ sap.ui.controller("sap.ui.SplitApp.view.Login", {
 				"username" : user,
 				"password" : password
 		};
-		var url = "http://127.0.0.1:8000/api/login/";
+		var url = "http://127.0.0.1:8000/api/db/login";
 		
-		////////////////handler data\\\\\\\\\\\\\\\\\
-		var dataReq = function(url,data,callback){
-			sap.ui.SplitApp.Gateway.post(url,data);
-			if (callback && typeof callback === 'function') callback();
-		}
+		sap.ui.SplitApp.Gateway.post(url,dataToPost, function(error, data) {
+			if(error) return error
+			that.getView().getModel().setData(data);
+			console.log(that.getView().getModel());
+			that.getRouter().navTo('app');
+		});
 		
-		
-		var data = dataReq(url,dataToPost,sap.ui.SplitApp.Gateway.getUser());
-		if(typeof data == 'undefined'){
-			console.log("no data");
-		}else{
-			console.log("data",data);
-			this.dataToApp(data);
-			this.getRouter().navTo("app");
-		}
-		
-		
-//		sap.ui.SplitApp.Gateway.post(url,dataToPost)
-//		var dataReq = sap.ui.SplitApp.Gateway.getUser();
-//		console.log("success: "+dataReq)
-		
-		
-		
-//	    if(data[0].message != "OK"){
-//			return
-//		}else{
-//			that.dataToApp(data[1]);
-//			that.getRouter().navTo("app")
-//		}
-		///////////////////////////////////////////////
-//		var response = this.getStatusToken("http://127.0.0.1:8000/api/login/"+user+"&&"+password);
-//		if(response){
-//			this.getRouter().navTo("app")
-//		}else{
-//			return
-//		}
-
-//		if(user == "admin" && password == "admin"){
-//			
-//			console.log("ok!")
-//			
-//		}else{
-//			console.log("wrong user and password")
-//			return
-//		}
+		//The set of functions that I want to call in order
 	},
 	
 	dataToApp : function(data){
@@ -136,3 +101,47 @@ sap.ui.controller("sap.ui.SplitApp.view.Login", {
 //	}
 
 });
+
+
+
+
+//function asincrona(cb) {
+//	$.jax....
+//		success: function(data) {
+//			cb(null, data)
+//		}, error: function(error) {
+//			cb(error, null)
+//		}
+//}
+//
+//
+//
+//function a () {
+//	return 'b';
+//}
+//
+//var c = a();
+//
+//asincrona(function(error, data) {
+//	if (error)
+//		return new Error()
+//	
+//	data
+//})
+//
+//function asyncornaSync(a, b) {
+//	return new Promise((resolve, reject) => {
+//		$.jax....
+//		success: function(data) {
+//			resolve(data)
+//		}, error: function(error) {
+//			reject(error)
+//		}
+//	})
+//}
+//
+//asyncornaSync(a, b).then().catch()
+
+//fuction a(){}
+//var b = a;
+//b()
