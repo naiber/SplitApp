@@ -2,7 +2,7 @@ jQuery.sap.require("sap.ui.SplitApp.Gateway");
 
 sap.ui.controller("sap.ui.SplitApp.view.Detail", {
 	getRouter : function () {
-		return sap.ui.core.UIComponent.getRouterFor(this);	
+		return sap.ui.core.UIComponent.getRouterFor(this);
 	},
 /**
 * Called when a controller is instantiated and its View controls (if available) are already created.
@@ -15,22 +15,22 @@ sap.ui.controller("sap.ui.SplitApp.view.Detail", {
 		var dataSelect = new sap.ui.model.json.JSONModel();
 		var supplierSelect = new sap.ui.model.json.JSONModel();
 		var that = this;
-		sap.ui.SplitApp.Gateway.get('http://127.0.0.1:8000/api/db/commesse',function(err,res){
+		sap.ui.SplitApp.Gateway.get('https://servernodeforsapui5.herokuapp.com/works',function(err,res){
 			if(err) return;
-			
+
 			console.log('commesse -> ',res);
 			dataSelect.setData(res);
 			that.getView().setModel(dataSelect,'commesse');
 		})
-		
-		sap.ui.SplitApp.Gateway.get('http://127.0.0.1:8000/api/db/fornitori',function(err,res){
+
+		sap.ui.SplitApp.Gateway.get('https://servernodeforsapui5.herokuapp.com/suppliers',function(err,res){
 			if(err) return;
-			
+
 			console.log('fornitori -> ',res);
 			supplierSelect.setData(res);
 			that.getView().setModel(supplierSelect,'fornitori');
 		})
-		
+
 //		this.getView().setModel(dataSelect);
 //		this.getView().setModel(supplierSelect,'fornitori');
 		var options = new sap.ui.model.json.JSONModel();
@@ -47,7 +47,7 @@ sap.ui.controller("sap.ui.SplitApp.view.Detail", {
 		var eventBus = sap.ui.getCore().getEventBus();
 		eventBus.subscribe("MainDetailChannel", "toDetail", this.onDataReceived, this);
 	},
-	
+
 	onBeforeRendering : function(){
 		console.log('dentro beforeRendering')
 		this.getView().byId("selectField").addStyleClass("select");
@@ -58,17 +58,17 @@ sap.ui.controller("sap.ui.SplitApp.view.Detail", {
 		this.getView().byId("commessa").addStyleClass("selectOrder");
 		this.getView().byId("editSupplier").addStyleClass("supplierField");
 	},
-	
+
 	onAfterRendering : function(){
 		console.log('dentro onAfterRendering');
 		console.log('user in detail model',this.getView().getModel().getProperty('/user'))
 		console.log('commessa model',this.getView().getModel());
 	},
-	
+
 	handleNavButton : function(){
 		this.getRouter().navTo('list');
 	},
-	
+
 	getUser : function(){
 		console.log("dentro getUser")
 		var app = sap.ui.getCore().byId("FullApp");
@@ -101,7 +101,7 @@ sap.ui.controller("sap.ui.SplitApp.view.Detail", {
 		console.log("url",url)
 		sap.ui.SplitApp.Gateway.get(url,function(err,data){
 			if(err) return err;
-			
+
 			if(data !== 'no result'){
 				that.getView().getModel().setProperty('/orders',data);
 				console.log('orders--> ',that.getView().getModel().getProperty('/orders'));
@@ -112,15 +112,15 @@ sap.ui.controller("sap.ui.SplitApp.view.Detail", {
 //				that.getView().getModel().setProperty('/menu',null);
 			}
 		});
-		
-		
+
+
 //		var req = new XMLHttpRequest();
-//		
+//
 //		req.open('GET',url,true);
 //		req.setRequestHeader('Accept', 'application/json');
 //		console.log(req.response);
 	},
-	
+
 	handleCalendarSelect : function(evt){
 		console.log("dentro handleCalendarSelect")
 		var Calendar = evt.getSource();
@@ -136,43 +136,43 @@ sap.ui.controller("sap.ui.SplitApp.view.Detail", {
 		console.log("dates",Calendar.getSelectedDates());
 		this.updateButtonEnabledStateForDate(startPick,endPick,oButton);
 	},
-	
+
 	selectCommessaCreate : function(evt){
 		var oSelect = this.getView().byId('commessa'),
 		oButton = this.getView().byId('saveButton');
-		
+
 		this._validateSelect(oSelect);
 		this.updateButtonEnabledStateForOrder(oSelect,oButton);
 	},
-	
+
 	selectFornitoreCreate : function(evt){
 		var oSelect = this.getView().byId('fornitore'),
 		oButton = this.getView().byId('saveButton');
-		
+
 		this._validateSelect(oSelect);
 		this.updateButtonEnabledStateForOrder(oSelect,oButton);
 	},
-	
+
 	selectCommessaEdit : function(evt){
 		console.log("dentro handleSelectChange");
 		console.log("evt",evt.getSource())
-		var oFrag = sap.ui.core.Fragment, 
+		var oFrag = sap.ui.core.Fragment,
 		oSelect = sap.ui.core.Fragment.byId("EditFrag","selectCommessa"),
 		oButton = sap.ui.core.Fragment.byId("EditFrag", "OKButton");
-		
+
 		this._validateSelect(oSelect);
 		this.updateButtonEnabledStateForOrder(oSelect,oButton);
 	},
-	
+
 	selectFornitoreEdit : function(evt){
-		var oFrag = sap.ui.core.Fragment, 
+		var oFrag = sap.ui.core.Fragment,
 		oSelect = sap.ui.core.Fragment.byId("EditFrag","selectFornitore"),
 		oButton = sap.ui.core.Fragment.byId("EditFrag", "OKButton");
-		
+
 		this._validateSelect(oSelect);
 		this.updateButtonEnabledStateForOrder(oSelect,oButton);
 	},
-	
+
 	selectDateEdit : function(evt){
 		var oFrag =  sap.ui.core.Fragment,
 		oDTPStart = sap.ui.core.Fragment.byId("EditFrag", "startDate"),
@@ -182,7 +182,7 @@ sap.ui.controller("sap.ui.SplitApp.view.Detail", {
 		this._validateDateTimePicker(evt.getParameter("value"), evt.oSource);
 		this.updateButtonEnabledStateForDate(oDTPStart, oDTPEnd, oOKButton);
 	},
-	
+
 	handleSaveButton : function(evt){
 		var that=this;
 		var detailPage = this.getView();
@@ -194,7 +194,7 @@ sap.ui.controller("sap.ui.SplitApp.view.Detail", {
 		var startDate = datePickStart.getDateValue();
 		var endDate = datePickEnd.getDateValue();
 		var saveButton = detailPage.byId("saveButton");
-		
+
 		if(order.getSelectedItem() != null && supplier.getSelectedItem() != null){
 			that.saveOrder({
 				idOrder : order.getSelectedItem().getKey(),
@@ -217,19 +217,19 @@ sap.ui.controller("sap.ui.SplitApp.view.Detail", {
 			return;
 		}
 	},
-	
-	
+
+
 	saveOrder : function(data){
 		var that = this;
 		console.log("data",data);
 		var name = this.getView().getModel().getProperty("/user/id");
 		var menu = this.getView().getModel().getProperty("/menu").charAt(0);
-		
+
 		var url = "http://127.0.0.1:8000/api/db/"+name+"/"+menu;
-		
+
 		sap.ui.SplitApp.Gateway.post(url,data,function(err,model){
 			if(err) return err;
-			
+
 			if(model == 1){
 				console.log("save success");
 				that.getView().getModel().setProperty('orders',model);
@@ -237,10 +237,10 @@ sap.ui.controller("sap.ui.SplitApp.view.Detail", {
 			}
 		});
 	},
-	
+
 	getItemId : function(event){
 		if(!event) return;
-		
+
 		var orders = this.getView().getModel().getProperty('/orders');
 		var orderTable = this.getView().byId('orderTable');
 		var context = event.getSource();
@@ -250,37 +250,37 @@ sap.ui.controller("sap.ui.SplitApp.view.Detail", {
 		var id = orders[itemId].id;
 		return id;
 	},
-	
+
 	deleteItem : function(evt){
 		console.log('dentro deleteItem')
 		var id = this.getItemId(evt);
 		var url = 'http://127.0.0.1:8000/api/db/delete/'+id;
 		sap.ui.SplitApp.Gateway.deleteItem(url,function(err,res){
 			if(err) return err;
-			
+
 			console.log('deleted ',res);
 		})
 	},
-	
+
 	getDefaultStart : function(date){
 		var start = new Date(date.setHours(9));
 		start.setMinutes(0);
 		start.setSeconds(0);
 		return start;
 	},
-	
+
 	getDefaultEnd : function(date){
 		var end = new Date(date.setHours(18));
 		end.setMinutes(0);
 		end.setSeconds(0);
 		return end;
 	},
-	
+
 	editItem : function(evt){
 		console.log('dentro editItem');
 		console.log('evt',evt);
 		var id = this.getItemId(evt);
-		
+
 		var oAppointment = evt.getSource();
 		var oFrag =  sap.ui.core.Fragment,
 		that = this,
@@ -292,7 +292,7 @@ sap.ui.controller("sap.ui.SplitApp.view.Detail", {
 		oSelectFornitori,
 		oSelectedItemFornitori,
 		oOKButton;
-		
+
 		if (!this._oDetailsPopover) {
 
 			this._oDetailsPopover = sap.ui.xmlfragment("EditFrag", "sap.ui.SplitApp.view.Edit", this);
@@ -304,31 +304,31 @@ sap.ui.controller("sap.ui.SplitApp.view.Detail", {
 		console.log("oAppBC",oAppBC)
 
 		console.log("oAppointemnt",oAppointment)
-		
+
 		this._oDetailsPopover.setBindingContext(oAppBC);
 		console.log("_oDetailsPopover",this._oDetailsPopover)
 		oModel = that.getView().getModel();
-		
+
 		oDateTimePickerStart = sap.ui.core.Fragment.byId("EditFrag", "startDate");
 		oDateTimePickerEnd = sap.ui.core.Fragment.byId("EditFrag", "endDate");
 
 		oOKButton = sap.ui.core.Fragment.byId("EditFrag", "OKButton");
-		
-		
+
+
 		oDateTimePickerStart.setDateValue(this.getDefaultStart(new Date()));
 		oDateTimePickerEnd.setDateValue(this.getDefaultEnd(new Date()));
 //		oSupplierInput.setValue(oAppointment.getText());
 
 		oDateTimePickerStart.setValueState("None");
 		oDateTimePickerEnd.setValueState("None");
-		
+
 //		this.updateButtonEnabledStateForDate(oDateTimePickerStart,oDateTimePickerEnd,oOKButton);
 		this._oDetailsPopover.openBy(oAppointment);
-	
+
 	},
-	
+
 	handleOkButton: function (oEvent) {
-		
+
 		console.log("dentro handleOkButton")
 		var that = this;
 		var sPath = oEvent.getSource().getBindingContext().sPath;
@@ -343,7 +343,7 @@ sap.ui.controller("sap.ui.SplitApp.view.Detail", {
 		oSelectFornitore = sap.ui.core.Fragment.byId("EditFrag", "selectFornitore"),
 		oButton = sap.ui.core.Fragment.byId("EditFrag", "OKButton"),
 		sAppointmentPath = this._oDetailsPopover.getBindingContext().sPath;
-			
+
 		if(oSelectCommessa.getSelectedItem() == null || oSelectFornitore.getSelectedItem() == null || oStartValue == "" || oEndValue == ""){
 			sap.m.MessageToast.show("Inserisci tutti i campi", {
 			    duration: 3000,                  // default
@@ -367,21 +367,21 @@ sap.ui.controller("sap.ui.SplitApp.view.Detail", {
 					supplier : oSelectFornitore.getSelectedItem().getText(),
 					hours : ((oEndValue-oStartValue)+1)
 			};
-		
+
 		var url = 'http://127.0.0.1:8000/api/db/put/'+id;
 		sap.ui.SplitApp.Gateway.put(url,itemToMod,function(err,res){
 			if(err) return err;
-			
+
 			model.refresh(true);
 		})
-		
+
 		this._oDetailsPopover.close();
 	},
-	
+
 	handleCancelButton : function(evt){
 		this._oDetailsPopover.close();
 	},
-	
+
 	updateButtonEnabledStateForDate: function (oDateTimePickerStart, oDateTimePickerEnd, oButton) {
 		console.log("dentro updateButtonEnabledStateForDate")
 		var bEnabled = oDateTimePickerStart.getValueState() !== "Error"
@@ -391,26 +391,26 @@ sap.ui.controller("sap.ui.SplitApp.view.Detail", {
 
 		oButton.setEnabled(bEnabled);
 	},
-	
+
 	updateButtonEnabledStateForOrder : function(oSelect,oButton){
-		
+
 		console.log("dentroupdateButtonEnabledStateForOrder");
 		var bEnabled = oSelect.getSelectedItem() != null;
-		
+
 		oButton.setEnabled(bEnabled)
 	},
-	
+
 	_validateDateTimePicker: function (sValue, oDateTimePicker) {
-		
+
 		console.log("dentro _validateDateTimePicker")
 		if (sValue === "") {
 			oDateTimePicker.setValueState("Error");
 		} else {
 			oDateTimePicker.setValueState("None");
 		}
-		
+
 	},
-	
+
 	_validateSelect : function (oSelect){
 		if(oSelect.getSelectedItem()){
 			oSelect.setValueState("None");
@@ -420,12 +420,12 @@ sap.ui.controller("sap.ui.SplitApp.view.Detail", {
 			oSelect.setValueState("Error")
 			oSelect.setValueStateText("Inserisci un campo")
 		}
-		
-	},
-	
-	
 
-	
+	},
+
+
+
+
 /**
 * Similar to onAfterRendering, but this hook is invoked before the controller's View is re-rendered
 * (NOT before the first rendering! onInit() is used for that one!).
