@@ -1,15 +1,15 @@
 <core:View xmlns:l="sap.ui.layout" xmlns:u="sap.ui.unified"
 	xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:core="sap.ui.core"
 	controllerName="sap.ui.SplitApp.view.Detail" xmlns:html="http://www.w3.org/1999/xhtml">
-	<Page 
+	<Page
 		title="{ path : '/menu'}"
 		showNavButton="{device>/isPhone}"
 		navButtonPress="handleNavButton">
 		<content>
-			<u:CalendarDateInterval 
-				id="calendar" 
+			<u:CalendarDateInterval
+				id="calendar"
 				days="9"
-				width="100%" 
+				width="100%"
 				select="handleCalendarSelect"
 				pickerPopup="true" />
 				<l:VerticalLayout
@@ -20,7 +20,7 @@
 					forceSelection="false"
 					change="selectCommessaCreate"
 					items="{commesse>/}">
-					<core:Item key="{commesse>Id}" text="{commesse>Name}"/>
+					<core:Item key="{commesse>id}" text="{commesse>name}"/>
 				</Select>
 			</l:VerticalLayout>
 			<l:VerticalLayout
@@ -31,7 +31,7 @@
 					forceSelection = "false"
 					change = "selectFornitoreCreate"
 					items = "{fornitori>/}">
-					<core:Item key="{fornitori>Id}" text="{fornitori>Name}"/>
+					<core:Item key="{fornitori>id}" text="{fornitori>name}"/>
 				</Select>
 			</l:VerticalLayout>
 			<l:VerticalLayout
