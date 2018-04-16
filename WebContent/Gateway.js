@@ -20,7 +20,6 @@ sap.ui.SplitApp.Gateway = {
 	
 	put : function(url,dati,cb){
 		console.log('dentro put');
-		var that = this;
 		$.ajax({
 			url : url,
 			method : 'PUT',
@@ -38,7 +37,6 @@ sap.ui.SplitApp.Gateway = {
 	
 	post : function(url,dati,cb){
 		console.log("dentro post")
-		var that = this;
 		$.ajax({
 			  url: url,
 			  method: 'POST',
@@ -56,7 +54,6 @@ sap.ui.SplitApp.Gateway = {
 	
 	deleteItem : function(url,cb){
 		console.log('dentro deleteItem')
-		var that= this;
 		$.ajax({
 			url : url,
 			method : 'DELETE',
