@@ -73,7 +73,7 @@ sap.ui.controller("sap.ui.SplitApp.view.Detail", {
 		console.log("dentro getUser")
 		var app = sap.ui.getCore().byId("FullApp");
 		var LoginPage = app.getPage("Login");
-		console.log('Odata of LoginPage',LoginPage.getModel().Odata);
+		console.log('Odata of LoginPage',LoginPage.getModel());
 		var user = {
 				"_id" : LoginPage.getModel().oData._id,
 				"name" : LoginPage.getModel().oData.name,
