@@ -74,11 +74,10 @@ sap.ui.controller("sap.ui.SplitApp.view.Detail", {
 		var app = sap.ui.getCore().byId("FullApp");
 		var LoginPage = app.getPage("Login");
 		var user = {
-				"id" : LoginPage.getModel().oData.id,
+				"_id" : LoginPage.getModel().oData.id,
 				"name" : LoginPage.getModel().oData.name,
 				"user" : LoginPage.getModel().oData.user,
 				"password" : LoginPage.getModel().oData.password,
-				"odata" : LoginPage.getModel().oData.odata
 		}
 		console.log("user",user);
 		return user;
@@ -95,8 +94,7 @@ sap.ui.controller("sap.ui.SplitApp.view.Detail", {
 		var menu = data.name;
 		model.setProperty("/menu",menu);
 		console.log("username",user);
-		var b = this.getView().getModel().getProperty("/user/odata");
-		var url = "http://127.0.0.1:8000/api/db/"+user+"/"+menu.charAt(0)+"/"+b;
+		var url = "http://127.0.0.1:8000/api/db/"+user+"/"+menu.charAt(0);
 //		var url = "http://127.0.0.1:8000/api/db/"+user+"/"+b;
 		console.log("url",url)
 		sap.ui.SplitApp.Gateway.get(url,function(err,data){
