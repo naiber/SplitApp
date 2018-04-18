@@ -36,8 +36,9 @@ sap.ui.controller("sap.ui.SplitApp.view.Detail", {
 		var options = new sap.ui.model.json.JSONModel();
 		options.setData({
 			user : {},
-			orders : [],
+			orders : '',
 			menu : "",
+			menuName : "",
 			savedCommit : ""
 		});
 		this.getView().setModel(options);
@@ -71,17 +72,31 @@ sap.ui.controller("sap.ui.SplitApp.view.Detail", {
 
 	getUser : function(){
 		console.log("dentro getUser")
-		var app = sap.ui.getCore().byId("FullApp");
-		var LoginPage = app.getPage("Login");
-		console.log('Odata of LoginPage',LoginPage.getModel());
+		/* var app = sap.ui.getCore().byId("FullApp");
+		var LoginPage = app.getPage("Login"); 
+		console.log('Odata of LoginPage',LoginPage.getModel().oData);*/
+		var userLoggedIn = sap.ui.getCore().getModel('userLogged');
+		console.log('userLoggedIn--> ',userLoggedIn.oData)
 		var user = {
-				"_id" : LoginPage.getModel().oData._id,
-				"name" : LoginPage.getModel().oData.name,
-				"user" : LoginPage.getModel().oData.user,
-				"password" : LoginPage.getModel().oData.password,
+				"_id" : userLoggedIn.oData._id,
+				"name" : userLoggedIn.oData.name,
+				"user" : userLoggedIn.oData.user,
+				"password" : userLoggedIn.oData.password,
 		}
 		console.log("user",user);
 		return user;
+	},
+
+	getModel : function(){
+		return this.getView().getModel();
+	},
+
+	getCurrentUsername : function(){
+		return this.getModel().getProperty("/user/_id");
+	},
+
+	getCurrentMenu : function(){
+		return this.getModel().getProperty('/menuName');
 	},
 
 	onDataReceived : function(channel, event, data) {
@@ -90,24 +105,23 @@ sap.ui.controller("sap.ui.SplitApp.view.Detail", {
 		console.log("channel",channel)
 		console.log("event",event)
 		var that=this;
-		var model = this.getView().getModel();
-		var user = model.getProperty("/user/name");
-		var menu = data.name;
-		model.setProperty("/menu",menu);
-		console.log("username",user);
-		var url = "http://127.0.0.1:8000/api/db/"+user+"/"+menu.charAt(0);
+		var menu = data.id;
+		this.getModel().setProperty("/menu",menu);
+		var menuName = data.name;
+		this.getModel().setProperty("/menuName",menuName);
+		var url = "https://servernodeforsapui5.herokuapp.com/records/"+that.getCurrentUsername()+"/"+this.getCurrentMenu();
 //		var url = "http://127.0.0.1:8000/api/db/"+user+"/"+b;
 		console.log("url",url)
 		sap.ui.SplitApp.Gateway.get(url,function(err,data){
 			if(err) return err;
 
 			if(data !== 'no result'){
-				that.getView().getModel().setProperty('/orders',data);
-				console.log('orders--> ',that.getView().getModel().getProperty('/orders'));
-				that.getView().getModel().refresh(true);
+				that.getModel().setProperty('/orders/',data);
+				console.log('orders--> ',that.getModel().getProperty('/orders/'));
+				that.getModel().refresh(true);
 			}else{
 				console.log('dati non presenti')
-				that.getView().getModel().setProperty('/orders',null);
+				that.getModel().setProperty('/orders/',null);
 //				that.getView().getModel().setProperty('/menu',null);
 			}
 		});
@@ -217,46 +231,53 @@ sap.ui.controller("sap.ui.SplitApp.view.Detail", {
 		}
 	},
 
-
 	saveOrder : function(data){
 		var that = this;
 		console.log("data",data);
-		var name = this.getView().getModel().getProperty("/user/id");
-		var menu = this.getView().getModel().getProperty("/menu").charAt(0);
+		
 
-		var url = "http://127.0.0.1:8000/api/db/"+name+"/"+menu;
+		var url = "https://servernodeforsapui5.herokuapp.com/users/"+this.getCurrentUsername()+"/"+this.getCurrentMenu();
 
-		sap.ui.SplitApp.Gateway.post(url,data,function(err,model){
-			if(err) return err;
-
-			if(model == 1){
-				console.log("save success");
-				that.getView().getModel().setProperty('orders',model);
-				that.getView().refresh(true);
-			}
+		function postData (url,data,cb){
+			sap.ui.SplitApp.Gateway.post(url,data,function(err,model){
+				if(err) return err;
+	
+				if(model == 1){
+					console.log("save success");
+					that.getView().getModel().setProperty('orders',model);
+					
+				}
+			})
+			cb();
+		}
+		
+		postData(url,data,function(){
+			that.getView().getModel().refresh(true);
 		});
 	},
 
 	getItemId : function(event){
 		if(!event) return;
 
-		var orders = this.getView().getModel().getProperty('/orders');
+		var orders = this.getModel().getProperty('/orders/appointment');
 		var orderTable = this.getView().byId('orderTable');
 		var context = event.getSource();
 		var sPath = context.getBindingContext().sPath;
 		var itemId = sPath.substring(sPath.length-1,sPath.length);
 		console.log('itemId',itemId);
-		var id = orders[itemId].id;
+		var id = orders[itemId]._id;
 		return id;
 	},
 
 	deleteItem : function(evt){
 		console.log('dentro deleteItem')
+		var that = this;
 		var id = this.getItemId(evt);
-		var url = 'http://127.0.0.1:8000/api/db/delete/'+id;
+		
+		var url = 'https://servernodeforsapui5.herokuapp.com/record/'+this.getCurrentUsername()+'/'+this.getCurrentMenu()+'/'+id;
 		sap.ui.SplitApp.Gateway.deleteItem(url,function(err,res){
 			if(err) return err;
-
+			that.getView().byId('orderTable').getBindingContext().refresh(true);
 			console.log('deleted ',res);
 		})
 	},
@@ -330,11 +351,13 @@ sap.ui.controller("sap.ui.SplitApp.view.Detail", {
 
 		console.log("dentro handleOkButton")
 		var that = this;
+		
 		var sPath = oEvent.getSource().getBindingContext().sPath;
 		var index = sPath.substring(sPath.length-1,sPath.length);
-		var model = this.getView().getModel();
-		var id = model.getProperty('/orders')[index].id;
-		console.log(id);
+		console.log('index->',index)
+		console.log('orders array->',this.getModel().getProperty('/orders/'))
+		var id = this.getModel().getProperty('/orders/')[index]._id;
+		console.log('id->',id);
 		var oFrag =  sap.ui.core.Fragment,
 		oSelectCommessa = sap.ui.core.Fragment.byId("EditFrag", "selectCommessa"),
 		oStartValue = sap.ui.core.Fragment.byId("EditFrag", "startDate").getValue(),
@@ -364,10 +387,10 @@ sap.ui.controller("sap.ui.SplitApp.view.Detail", {
 					idOrder : oSelectCommessa.getSelectedKey(),
 					order : oSelectCommessa.getSelectedItem().getText(),
 					supplier : oSelectFornitore.getSelectedItem().getText(),
-					hours : ((oEndValue-oStartValue)+1)
+					hours : ((oEndValue-oStartValue)+1)+''
 			};
 
-		var url = 'http://127.0.0.1:8000/api/db/put/'+id;
+		var url = 'https://servernodeforsapui5.herokuapp.com/users/record/'+that.getCurrentUsername()+'/'+that.getCurrentMenu()+'/'+id;
 		sap.ui.SplitApp.Gateway.put(url,itemToMod,function(err,res){
 			if(err) return err;
 

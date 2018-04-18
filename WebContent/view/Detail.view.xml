@@ -2,7 +2,7 @@
 	xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:core="sap.ui.core"
 	controllerName="sap.ui.SplitApp.view.Detail" xmlns:html="http://www.w3.org/1999/xhtml">
 	<Page
-		title="{ path : '/menu'}"
+		title="{ path : '/menuName'}"
 		showNavButton="{device>/isPhone}"
 		navButtonPress="handleNavButton">
 		<content>
@@ -63,7 +63,7 @@
 			<Table
 				id="orderTable"
 				fixedLayout= "true"
-				items="{path : '/orders'}">
+				items="{path : '/orders/'}">
 				<headerToolbar>
 				</headerToolbar>
 				<columns>
@@ -97,12 +97,12 @@
 							<Text text="{hours}"/>
 							<Button
 								id="editIcon"
-								icon="{actions1}"
+								icon="sap-icon://edit"
 								press="editItem">
 							</Button>
 							<Button
 								id="deleteIcon"
-								icon="{actions2}"
+								icon="sap-icon://delete"
 								press="deleteItem">
 							</Button>
 						</cells>

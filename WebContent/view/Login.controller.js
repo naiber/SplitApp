@@ -9,7 +9,10 @@ sap.ui.controller("sap.ui.SplitApp.view.Login", {
 	onInit : function(){
 		console.log("dentro onInit di Login")
 		var userLogged = new sap.ui.model.json.JSONModel();
-		this.getView().setModel(userLogged);
+		sap.ui.getCore().setModel(userLogged,'userLogged');
+		var token = new sap.ui.model.json.JSONModel();
+		sap.ui.getCore().setModel(token,'token');
+
 	},
 	
 	
@@ -26,7 +29,8 @@ sap.ui.controller("sap.ui.SplitApp.view.Login", {
 		
 		sap.ui.SplitApp.Gateway.post(url,dataToPost, function(error, data) {
 			if(error) return error
-			that.getView().getModel().setData(data);
+			sap.ui.getCore().getModel('userLogged').setData(data.user);
+			sap.ui.getCore().getModel('token').setData(data.token)
 			console.log(that.getView().getModel());
 			that.getRouter().navTo('app');
 		});

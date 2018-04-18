@@ -12,16 +12,17 @@ sap.ui.controller("sap.ui.SplitApp.view.SplitList", {
 		var oModel = new sap.ui.model.json.JSONModel();
 		oModel.setData({
 			items : [{
+						id : 0,
 						name : "Report",
 						icon : "sap-icon://account",
 						selected : true
 					  },
 					  {
+						id : 1,
 						name : "Admin",
 						icon : "sap-icon://arobase",
 						selected : false
 					  }],
-			odata : false,
 			isPhone : jQuery.device.is.phone
 		})
 		

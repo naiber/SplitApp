@@ -37,7 +37,7 @@
 						change="selectCommessaEdit"
 						width="100%"
 						items="{commesse>/}">
-						<core:Item key="{commesse>Id}" text="{commesse>Name}"/>
+						<core:Item key="{commesse>id}" text="{commesse>name}"/>
 					</Select>
 					<Label text="Data inizio"/>
 					<DateTimePicker id="startDate" change="selectDateEdit"/>
@@ -50,7 +50,7 @@
 						change="selectFornitoreEdit"
 						width="100%"
 						items="{fornitori>/}">
-						<core:Item key="{fornitori>Id}" text="{fornitori>Name}"/>
+						<core:Item key="{fornitori>id}" text="{fornitori>name}"/>
 					</Select>
 				</f:content>
 			</f:SimpleForm>
