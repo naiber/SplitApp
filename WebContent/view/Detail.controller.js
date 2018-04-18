@@ -236,7 +236,7 @@ sap.ui.controller("sap.ui.SplitApp.view.Detail", {
 		console.log("data",data);
 		
 
-		var url = "https://servernodeforsapui5.herokuapp.com/users/"+this.getCurrentUsername()+"/"+this.getCurrentMenu();
+		var url = "https://servernodeforsapui5.herokuapp.com/records/"+this.getCurrentUsername()+"/"+this.getCurrentMenu();
 
 		function postData (url,data,cb){
 			sap.ui.SplitApp.Gateway.post(url,data,function(err,model){
@@ -259,7 +259,7 @@ sap.ui.controller("sap.ui.SplitApp.view.Detail", {
 	getItemId : function(event){
 		if(!event) return;
 
-		var orders = this.getModel().getProperty('/orders/appointment');
+		var orders = this.getModel().getProperty('/orders/');
 		var orderTable = this.getView().byId('orderTable');
 		var context = event.getSource();
 		var sPath = context.getBindingContext().sPath;
@@ -274,10 +274,10 @@ sap.ui.controller("sap.ui.SplitApp.view.Detail", {
 		var that = this;
 		var id = this.getItemId(evt);
 		
-		var url = 'https://servernodeforsapui5.herokuapp.com/record/'+this.getCurrentUsername()+'/'+this.getCurrentMenu()+'/'+id;
+		var url = 'https://servernodeforsapui5.herokuapp.com/records/'+this.getCurrentUsername()+'/'+this.getCurrentMenu()+'/'+id;
 		sap.ui.SplitApp.Gateway.deleteItem(url,function(err,res){
 			if(err) return err;
-			that.getView().byId('orderTable').getBindingContext().refresh(true);
+			
 			console.log('deleted ',res);
 		})
 	},
