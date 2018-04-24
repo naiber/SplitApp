@@ -390,7 +390,7 @@ sap.ui.controller("sap.ui.SplitApp.view.Detail", {
 					hours : ((oEndValue-oStartValue)+1)+''
 			};
 
-		var url = 'https://servernodeforsapui5.herokuapp.com/users/record/'+that.getCurrentUsername()+'/'+that.getCurrentMenu()+'/'+id;
+		var url = 'https://servernodeforsapui5.herokuapp.com/record/'+that.getCurrentUsername()+'/'+that.getCurrentMenu()+'/'+id;
 		sap.ui.SplitApp.Gateway.put(url,itemToMod,function(err,res){
 			if(err) return err;
 
