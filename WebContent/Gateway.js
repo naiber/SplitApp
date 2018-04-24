@@ -25,7 +25,7 @@ sap.ui.SplitApp.Gateway = {
 		$.ajax({
 			url : url,
 			method : 'PUT',
-			data : dati,
+			data : JSON.stringify(dati),
 			crossDomain: true,
 			contentType : "application/json",
 			success : function(data,textStatus,jqXHR) {
@@ -44,12 +44,13 @@ sap.ui.SplitApp.Gateway = {
 		$.ajax({
 			  url: url,
 			  method: 'POST',
-				data : dati,
+				data : JSON.stringify(dati),
 				crossDomain: true,
 				contentType : "application/json",
 			  success: function(data,textStatus,jqXHR) {
 				console.log("data",data);
-				cb(null, data);
+				$( "#postResponse" ).text(data);
+					cb(null, data);
 			  },
 			  error: function(jqXHR,textStatus,err) {
 			    console.log('error: ' + err);
