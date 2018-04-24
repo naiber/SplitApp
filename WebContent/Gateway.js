@@ -8,6 +8,7 @@ sap.ui.SplitApp.Gateway = {
 			  url: url,
 				method: 'GET',
 				crossDomain: true,
+				contentType : "application/json",
 			  success: function(data,textStatus,jqXHR) {
 			    console.log("success: "+data)
 			    cb(null,data);
@@ -26,6 +27,7 @@ sap.ui.SplitApp.Gateway = {
 			method : 'PUT',
 			data : dati,
 			crossDomain: true,
+			contentType : "application/json",
 			success : function(data,textStatus,jqXHR) {
 				console.log('data',data);
 				cb(null,data);
@@ -44,6 +46,7 @@ sap.ui.SplitApp.Gateway = {
 			  method: 'POST',
 				data : dati,
 				crossDomain: true,
+				contentType : "application/json",
 			  success: function(data,textStatus,jqXHR) {
 				console.log("data",data);
 				cb(null, data);
@@ -61,6 +64,7 @@ sap.ui.SplitApp.Gateway = {
 			url : url,
 			method : 'DELETE',
 			crossDomain : true,
+			contentType : "application/json",
 			success: function(data,textStatus,jqXHR) {
 			    console.log("success: "+data)
 			    cb(null,data);
